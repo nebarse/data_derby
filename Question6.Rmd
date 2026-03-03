@@ -1,0 +1,118 @@
+---
+title: "Question6"
+author: "Bethelhem Kassa"
+date: "2024-04-11"
+output: html_document
+---
+```{r}
+library(readxl)
+library(tidyverse)
+#import Table cp-1 sheet from the excel file
+Iosdf <- read_excel("C:/Users/nebar/Desktop/Dataderby/National+education+cost+data.xlsx",sheet = "TABLE CP-4", skip = 2)
+Iosdf
+
+Sal_df <- read_excel("C:/Users/nebar/Desktop/Dataderby/salary_potential.xlsx")
+Sal_df
+
+Iosdf1 <- Iosdf[1:50,c(1:21)]|>
+  rename("Universities" = `In 2023 Dollars...1`,
+         "2007-08" = `2007-08...3`,
+         "2008-09" = `2008-09...4`,
+         "2009-10" = `2009-10...5`,
+         "2010-11" = `2010-11...6`,
+         "2011-12" = `2011-12...7`,
+         "2012-13" = `2012-13...8`,
+         "2013-14" = `2013-14...9`,
+         "2014-15" = `2014-15...10`,
+         "2015-16" = `2015-16...11`,
+         "2016-17" = `2016-17...12`,
+         "2017-18" = `2017-18...13`,
+         "2018-19" = `2018-19...14`,
+         "2019-20" = `2019-20...15`,
+         "2020-21" = `2020-21...16`,
+         "2021-22" = `2021-22...17`,
+         "2022-23" = `2022-23...18`,
+         "2023-24" = `2023-24...19`,
+         "1-Year" = `1-Year...20`,
+         "5-Year" = `5-Year...21`)
+Iosdf1
+
+#preprocessing
+Iosdf1u <- Iosdf1|>
+  select(c(2,14))|>
+  rename("fees" = `2018-19`)
+Iosdf1u$fees <- as.numeric(Iosdf1u$fees )
+
+Sal_dfu <- Sal_df|>
+  select(-c(1))
+
+#summarize each universiites in their states
+Sal_dfu1<- Sal_df|>
+  group_by(state_name)|>
+  summarize(average_ear = mean(early_career_pay,na.rm = TRUE),average_mid = mean(mid_career_pay))
+
+
+
+modf <- Sal_dfu1|>
+  mutate(STATE = c('AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID',
+                    'IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO',
+                    'MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR',
+                    'PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'))
+modf
+#correlation between salary pay and in-state tuition
+main_df <- merge(modf,Iosdf1u, by = "STATE")
+
+ggplot(data = main_df,aes(x= average_ear,y = fees)) + geom_point()+ labs(title = "correlation between early-career-pay and in-state tuition")
+cor.test(main_df$average_ear,main_df$fees)
+
+ggplot(data = main_df,aes(x= average_mid,y = fees)) + geom_point()+ labs(title = "correlation between mid-career-pay and in-state tuition")
+cor.test(main_df$average_mid,main_df$fees)
+
+
+
+
+```
+```{r}
+#correlation between salary pay and in-state tuition
+
+Iosdf3 <- Iosdf[1:50,c(22:40)]|> 
+  cbind(Iosdf1$Universities,Iosdf1$STATE)|>
+  rename("Universities" = `Iosdf1$Universities`, "STATE" = `Iosdf1$STATE`,
+         "2007-08" = `2007-08...22`,
+         "2008-09" = `2008-09...23`,
+         "2009-10" = `2009-10...24`,
+         "2010-11" = `2010-11...25`,
+         "2011-12" = `2011-12...26`,
+         "2012-13" = `2012-13...27`,
+         "2013-14" = `2013-14...28`,
+         "2014-15" = `2014-15...29`,
+         "2015-16" = `2015-16...30`,
+         "2016-17" = `2016-17...31`,
+         "2017-18" = `2017-18...32`,
+         "2018-19" = `2018-19...33`,
+         "2019-20" = `2019-20...34`,
+         "2020-21" = `2020-21...35`,
+         "2021-22" = `2021-22...36`,
+         "2022-23" = `2022-23...37`,
+         "2023-24" = `2023-24...38`,
+         "1-Year" = `1-Year...39`,
+         "5-Year" = `5-Year...40`)
+Iosdf3
+
+#select year=2018-19 & state columns
+Iosdf3u <- Iosdf3|>
+  select(c(12,21))|>
+  rename("fees" = `2018-19`)
+Iosdf3u$fees <- as.numeric(Iosdf3u$fees )
+
+#merging Iosdf3u and modf tables by state
+main_df1 <- merge(modf,Iosdf3u, by = "STATE")
+
+ggplot(data = main_df1,aes(x= average_ear,y = fees)) + geom_point() + labs(title = "correlation between early-career-pay and out-state tuition")
+cor.test(main_df1$average_ear,main_df1$fees)
+
+ggplot(data = main_df1,aes(x= average_mid,y = fees)) + geom_point()+ labs(title = "correlation between mid-career-pay and out-state tuition")
+cor.test(main_df1$average_mid,main_df1$fees)
+
+```
+

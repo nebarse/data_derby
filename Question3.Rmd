@@ -1,0 +1,233 @@
+---
+title: "Question3"
+author: "Bethelhem Kassa"
+date: "2024-03-25"
+output: html_document
+---
+```{r}
+library(readxl)
+library(tidyverse)
+
+
+#import Table cp-1 sheet from the excel file
+statedf <- read_excel("C:/Users/nebar/Desktop/Dataderby/National+education+cost+data.xlsx",sheet = "TABLE CP-3", skip = 2)
+
+
+#extract the data frame for public two years in district fees in 2023 dollars and rename the column names
+statedf1 <- statedf[1:51,c(1:23)]|>
+  rename("States" = `In 2023 Dollars...1`,
+         "2004-05" = `2004-05...2`,
+         "2005-06" = `2005-06...3`,
+         "2006-07" = `2006-07...4`,
+         "2007-08" = `2007-08...5`,
+         "2008-09" = `2008-09...6`,
+         "2009-10" = `2009-10...7`,
+         "2010-11" = `2010-11...8`,
+         "2011-12" = `2011-12...9`,
+         "2012-13" = `2012-13...10`,
+         "2013-14" = `2013-14...11`,
+         "2014-15" = `2014-15...12`,
+         "2015-16" = `2015-16...13`,
+         "2016-17" = `2016-17...14`,
+         "2017-18" = `2017-18...15`,
+         "2018-19" = `2018-19...16`,
+         "2019-20" = `2019-20...17`,
+         "2020-21" = `2020-21...18`,
+         "2021-22" = `2021-22...19`,
+         "2022-23" = `2022-23...20`,
+         "2023-24" = `2023-24...21`,
+         "1-Year % Change" = `1-Year % Change...22`,
+         "5-Year % Change" = `5-Year % Change...23`
+         )
+statedf1
+
+#extract the data frame for public two years in district fees in current dollars and rename the column names
+statedf2 <- statedf[54:104,c(1:23)]|>
+  rename("States" = `In 2023 Dollars...1`,
+         "2004-05" = `2004-05...2`,
+         "2005-06" = `2005-06...3`,
+         "2006-07" = `2006-07...4`,
+         "2007-08" = `2007-08...5`,
+         "2008-09" = `2008-09...6`,
+         "2009-10" = `2009-10...7`,
+         "2010-11" = `2010-11...8`,
+         "2011-12" = `2011-12...9`,
+         "2012-13" = `2012-13...10`,
+         "2013-14" = `2013-14...11`,
+         "2014-15" = `2014-15...12`,
+         "2015-16" = `2015-16...13`,
+         "2016-17" = `2016-17...14`,
+         "2017-18" = `2017-18...15`,
+         "2018-19" = `2018-19...16`,
+         "2019-20" = `2019-20...17`,
+         "2020-21" = `2020-21...18`,
+         "2021-22" = `2021-22...19`,
+         "2022-23" = `2022-23...20`,
+         "2023-24" = `2023-24...21`,
+         "1-Year % Change" = `1-Year % Change...22`,
+         "5-Year % Change" = `5-Year % Change...23`
+         )
+statedf2
+#extract the data frame for public four year in-state fees in 2023 dollars and rename the column names
+statedf3 <- statedf[1:51,c(24:46)]|>
+  rename("States" = `In 2023 Dollars...24`,
+         "2004-05" = `2004-05...25`,
+         "2005-06" = `2005-06...26`,
+         "2006-07" = `2006-07...27`,
+         "2007-08" = `2007-08...28`,
+         "2008-09" = `2008-09...29`,
+         "2009-10" = `2009-10...30`,
+         "2010-11" = `2010-11...31`,
+         "2011-12" = `2011-12...32`,
+         "2012-13" = `2012-13...33`,
+         "2013-14" = `2013-14...34`,
+         "2014-15" = `2014-15...35`,
+         "2015-16" = `2015-16...36`,
+         "2016-17" = `2016-17...37`,
+         "2017-18" = `2017-18...38`,
+         "2018-19" = `2018-19...39`,
+         "2019-20" = `2019-20...40`,
+         "2020-21" = `2020-21...41`,
+         "2021-22" = `2021-22...42`,
+         "2022-23" = `2022-23...43`,
+         "2023-24" = `2023-24...44`,
+         "1-Year % Change" = `1-Year % Change...45`,
+         "5-Year % Change" = `5-Year % Change...46`
+         )
+statedf3
+
+#extract the data frame for public four year in-state fees in current dollars and rename the column names
+statedf4 <- statedf[1:51,c(24:46)]|>
+  rename("States" = `In 2023 Dollars...24`,
+         "2004-05" = `2004-05...25`,
+         "2005-06" = `2005-06...26`,
+         "2006-07" = `2006-07...27`,
+         "2007-08" = `2007-08...28`,
+         "2008-09" = `2008-09...29`,
+         "2009-10" = `2009-10...30`,
+         "2010-11" = `2010-11...31`,
+         "2011-12" = `2011-12...32`,
+         "2012-13" = `2012-13...33`,
+         "2013-14" = `2013-14...34`,
+         "2014-15" = `2014-15...35`,
+         "2015-16" = `2015-16...36`,
+         "2016-17" = `2016-17...37`,
+         "2017-18" = `2017-18...38`,
+         "2018-19" = `2018-19...39`,
+         "2019-20" = `2019-20...40`,
+         "2020-21" = `2020-21...41`,
+         "2021-22" = `2021-22...42`,
+         "2022-23" = `2022-23...43`,
+         "2023-24" = `2023-24...44`,
+         "1-Year % Change" = `1-Year % Change...45`,
+         "5-Year % Change" = `5-Year % Change...46`
+         )
+statedf4
+
+#change all the columns except the first one to numeric
+statedf1u <- cbind(statedf1$States,as.data.frame(apply(statedf1[2:23],2, as.numeric)))|>
+  rename("States" = `statedf1$States`)
+
+statedf2u <- cbind(statedf2$States,as.data.frame(apply(statedf2[2:23],2,as.numeric)))|>
+  rename("States" = `statedf2$States`)
+
+statedf3u <- cbind(statedf3$States,as.data.frame(apply(statedf3[2:23],2,as.numeric)))|>
+  rename("States" = `statedf3$States`)
+
+statedf4u <- cbind(statedf4$States,as.data.frame(apply(statedf4[2:23],2,as.numeric)))|>
+  rename("States" = `statedf4$States`)
+
+
+#find statistical summary for all the tables
+summary(statedf1u)
+summary(statedf2u)
+summary(statedf3u)
+summary(statedf4u)
+
+#since Alaska and district Colombia don't have records for district fees needs to be removed
+statedf1u1 <- statedf1u[-c(2,9),]
+statedf2u1 <- statedf2u[-c(2,9),]
+```
+```{r}
+library(ggplot2)
+library(plotly)
+
+df1 <- gather(statedf1u1,key = "Year", value = "fees", 2:21)
+df2 <- gather(statedf2u1,key = "Year", value = "fees", 2:21)
+df3 <- gather(statedf3u,key = "Year", value = "fees", 2:21)
+df4 <- gather(statedf4u,key = "Year", value = "fees", 2:21)
+
+#the most expensive states for public two-year in district fees in 2023 dollars
+df1_exp <- df1|>
+  filter(States  %in% c("Vermont","New Hampshire","South Dakota","Massachusetts","Minnesota"))
+df1_exp
+ggplotly(ggplot(df1, aes(x = Year, y=fees,group = States,color = States)) + geom_line() + labs(title = "Public two-year in district fees in 2023 dollars") + theme(axis.text.x = element_text(angle = 90)))
+ggplotly(ggplot(df1_exp, aes(x = Year, y=fees,group = States,color = States)) + geom_line() + labs(title = "Top Five states with Expensive Public two-year colleges in-district fees ") + theme(axis.text.x = element_text(angle = 90)))
+
+#the cheapest states
+df1_chp <- df1|>
+  filter(States  %in% c("California","New Mexico","North Carolina","Arizona","Texas"))
+df1_chp
+ggplotly(ggplot(df1_chp, aes(x = Year, y=fees,group = States,color = States)) + geom_line() + labs(title = "Top Five  states with Cheap Public two-year colleges in-district fees ") + theme(axis.text.x = element_text(angle = 90)))
+
+ggplotly(ggplot(df2, aes(x = Year, y=fees,group = States,color = States)) + geom_line() + labs(title = "Public two-year in district fees in current dollars") + theme(axis.text.x = element_text(angle = 90)))
+ggplotly(ggplot(df3, aes(x = Year, y=fees,group = States,color = States)) + geom_line()+ labs(title = "Public four-year in state fees in 2023 dollars") + theme(axis.text.x = element_text(angle = 90)))
+
+#Top Five states with Expensive Public Four-year colleges in-district fees
+df3_exp <- df3|>
+  filter(States  %in% c("Vermont","New Hampshire","Pennsylvania","New Jersey","Illinois"))
+df3_exp
+ggplotly(ggplot(df3_exp, aes(x = Year, y=fees,group = States,color = States)) + geom_line() + labs(title = "Top Five states with Expensive Public Four-year colleges in-district fees ") + theme(axis.text.x = element_text(angle = 90)))
+
+df3_chp <- df3|>
+  filter(States  %in% c("Wyoming","Florida","Utah","North Carolina","New Mexico"))
+df3_chp
+ggplotly(ggplot(df3_chp, aes(x = Year, y=fees,group = States,color = States)) + geom_line() + labs(title = "Top Five  states with Cheap Public Four-year colleges in-district fees ") + theme(axis.text.x = element_text(angle = 90)))
+
+ggplotly(ggplot(df4, aes(x = Year, y=fees,group = States,color = States)) + geom_line()+ labs(title = "Public four-year in state fees in current dollars") + theme(axis.text.x = element_text(angle = 90)))
+
+ggplotly(ggplot(df1, aes(x = factor(States), y = fees))+ 
+  geom_bar(stat = "Summary", fun = "mean",fill = "steelblue") + theme(axis.text.x = element_text(angle = 90)) + labs(title = "Public two years in district average fees in 2023 dollars"))
+
+
+ggplotly(ggplot(df3, aes(x = factor(States), y = fees))+ 
+  geom_bar(stat = "Summary", fun = "mean",fill = "steelblue") + theme(axis.text.x = element_text(angle = 90)) + labs(title = "Public four years in district average fees in 2023 dollars"))
+```
+```{r}
+df1u <- df1$fees
+df1u
+df2u <- df2$fees
+
+#to help the comparison b|n the two tables, takeout Alaska and District of Columbia records
+df3u <- df3|>
+  group_by(States)|>
+  filter(States != "Alaska" & States != "District of Columbia" )
+df3u_m <- df3u$fees
+
+df4u <- df4|>
+  group_by(States)|>
+  filter(States != "Alaska" & States != "District of Columbia" )
+df4u
+df4u_m <- df4u$fees
+
+#compare the average between the tables
+college_df <- data.frame(group = rep(c("Two_year","Four_year"),each = 980), fees = c(df1u,df3u_m))
+college_df
+college_sum <- group_by(college_df,group)|>
+  summarise(
+    mean = mean(fees,na.rm = TRUE),
+    sd = sd(fees,na.rm = TRUE)
+  )
+college_sum
+ggplot(college_df,aes(x = group,y= fees)) + geom_boxplot() + labs(title = "comparison between public two-year and four-year ")
+
+#H0: mu(two) = mu(four);mu(two) != mu(four)
+
+college_t <- t.test(fees ~ group,data = college_df, alternative = "two.sided",paired = TRUE)
+college_t
+# since t = 78.982 and p-value < 0.05, reject H0
+#Therefore, there is evidence to support a significant difference between the average of two-college and four-college
+```
+
+
+

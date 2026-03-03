@@ -1,0 +1,88 @@
+---
+title: "Question1"
+author: "Bethelhem Kassa"
+date: "2024-03-21"
+output: html_document
+---
+```{r}
+library(readxl)
+library(tidyverse)
+library(ggplot2)
+library(plotly) # to plot interactive graph
+
+#import Table cp-1 sheet from the excel file
+cpdf1 <- read_excel("C:/Users/nebar/Desktop/Dataderby/National+education+cost+data.xlsx",sheet = "TABLE CP-1", skip = 2)|>
+  select(c(1:4))
+
+rate_df <- read_excel("C:/Users/nebar/Desktop/Dataderby/National+education+cost+data.xlsx",sheet = "CPI and Rate Conversion",skip = 1)|>
+  filter(row_number() <= n() - 3)|>
+  filter(!(`...1` %in% c("1962":"1985")))
+rate_df
+
+#convert the table to dataframe and remove the last three rows which are footnote and source
+cpdf2 <- as.data.frame(cpdf1)|>
+  filter(row_number() <= n() - 3)
+cpdf2
+
+#find the descriptive statistics of the dataframe
+summary(cpdf2)
+
+#update the year column for visualization purpose
+cpdf2$...1 <- c("1986":"2023")
+cpdf2 
+
+#combine the conversion table and tablecp-1
+rate_cpd <- cbind(rate_df,cpdf2)|>
+  select(-4)
+rate_cpd
+
+#convert each fee by multiplying the rate and each institution fee
+rate_mcpd <- mutate(rate_cpd,mpublic_two = (rate_cpd$`Factor Used to Convert to 2023 Dollars`)*(rate_cpd$`Public Two-Year`), mpublic_four = (rate_cpd$`Factor Used to Convert to 2023 Dollars`)*(rate_cpd$`Public Four-Year`), mprivate = (rate_cpd$`Factor Used to Convert to 2023 Dollars`)*(rate_cpd$`Private Nonprofit Four-Year`))
+
+rate_mcpd1 <- rate_mcpd|>
+  select(c(1,7,8,9))|>
+  rename('Year' = `...1`)
+
+summary(rate_mcpd1)
+
+rate <- rate_mcpd1|>
+  filter(Year %in% c('1990','2000','2010','2020'))
+
+#Visualization to show the trend among the three colleges
+moddf1 <- rate_mcpd1|>
+  gather(key = "college_type",value = "Fees" , -Year)|>
+  filter(Year %in% c('1990','2000','2010','2020'))
+moddf1
+
+ggplotly(ggplot(moddf1,aes(x= Year,y = Fees,group = college_type,col = college_type)) + geom_line() +  labs(x = "Year", y= "Tuition fees",title = "Tuition trends of the colleges") + scale_color_manual(values = c("#00AFBB", "#E7B800","#FC4E07")))
+
+```
+```{r}
+#fitting the model
+#Step1: H0: mupt = mupf = munp: Ha: atleast two means are different
+#Step2: one-way Anova(IV has three levels and 1Dv)
+modelE = aov(Fees ~ college_type, data = moddf1)
+summary(modelE)
+#step 3: F = 90.81 and p-value = 2e-16
+#step 4: since pvalue < 0.05, Reject H0, There is sufficient evidence that atleast two of the average tuition fees are different
+TukeyHSD(modelE)
+# The average tuition fees between Public Four-Year-Private Nonprofit Four-Year, Public Two-Year-Private Nonprofit Four-Year are significantly different 
+
+#to check noramlity and equal variance
+plot(modelE)
+
+plot(TukeyHSD(modelE,conf.level = 0.95),las = 2)
+```
+```{r}
+#To show mean difference with error bars representing the confidence interval
+moddf1|>
+  group_by(college_type)|>
+  summarize(avetu = mean(Fees),setu = sd(Fees)/sqrt(length(Fees)),tstar = qt(1-0.05/2,length(Fees)-1))|>
+  ggplot(aes(x=college_type, y=avetu))+geom_point()+geom_errorbar(aes(ymin=avetu-tstar*setu, ymax=avetu+tstar*setu))
+
+```
+```{r}
+
+```
+
+
