@@ -15,3 +15,5 @@ regions in both current dollars and in 2023 dollars, for in-state tuitions.
 both current dollars and in 2023 dollars, for in-state tuitions.
 
 4. The in-state and out-state tuitions at different states. 
+
+Software tools used: R
